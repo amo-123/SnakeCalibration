@@ -1,12 +1,11 @@
 % SPLINE Model
 % Function to produce a matrix of splines 
 % Given a number of splines and matix size 
-function [sumRes] = SolidSnake(y,x,data,sigma,dfig)
+function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig)
 
 % x: control points 
-start = y(1);
-ys = y(2:end);
-yc = round(ys) + start;
+
+yc = round(y) + start;
 %yc = y + start;
 pp = spline(x,[0 yc 0]);
 
