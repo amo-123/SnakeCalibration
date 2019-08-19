@@ -1,7 +1,7 @@
 % SPLINE Test Script
 
-x = 22:30:478;
-y = randi([-5,5],1,length(x));
+x = 22:35:478;
+y = randi([-10,10],1,length(x));
 pp = spline(x,[0 y 0]);
 
 SPLN = zeros([258,506]);

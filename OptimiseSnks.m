@@ -1,11 +1,12 @@
 % Optimise Snakes 
-band = 130; 
+band = 120; 
 sigma = 1;
+plim = 18;
 % 
-x = 22:48:478;
+x = 22:28:478;
 % 
 %y = randi([-3,3],1,length(x));
-y = ones([1,length(x)]);
+y = zeros([1,length(x)]);
 
 %SolidSnake(y,x,band,TstMskArr,sigma,0);
 % % 
@@ -20,13 +21,14 @@ h = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...
         'TolX',1e-10,'TolFun',1e-10,'Display','off','FinDiffRelStep',1);
 %now run the fitting
 
-%[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,splnarray,sigma,0);
+[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
+msk = maskData(mskNd4X,0.2);
+%mskArray = reshape(msk, 1, []);
+%[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
 
-mskArray = reshape(mskNd4X, 1, []);
-[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,130,mskArray,sigma,0);
+NY = SolidSnake(NewY,x,band,SPLN,sigma,4,plim);
 
-
-NY = SolidSnake(NewY,x,mskArray,1,4);
+%NY = SolidSnake(NewY,x,band,msk,sigma,4,plim);
 
 %%
 %figure, imagesc(SPLN);
