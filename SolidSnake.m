@@ -31,15 +31,16 @@ for j = 1:dim
     end
 end
 %%
+if dfig == 2 || dfig == 4
+    figure, imagesc(spln*50 + data);
+end
 
 NRM = sum(dataArray)/sum(sum(spln));
 
 spln = NRM.*spln;
 spln = imgaussfilt(spln,sigma);
 
-if dfig == 2 || dfig == 4
-    figure, imagesc(spln + data);
-end
+
 
 if dfig == 2 || dfig == 4
     figure, imagesc(spln);
