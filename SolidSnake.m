@@ -5,24 +5,31 @@ function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 
 % x: control points 
 dataArray = reshape(data, 1, []);
-
-yc = ((sigmf(y,[2 0]) -0.5)*2)*plim;
-%yc = y ;
-pp = spline(x,[0 yc 0]);
+dim = length(start);
+yc = zeros(size(y));
 
 spln= zeros([258,506]);
 xx = 22:478;
-yy = ppval(pp,xx);
+yy = zeros(length(xx),dim);
 
+for i = 1:dim
+    yc(i,:) = ((sigmf(y(i,:),[2 0]) -0.5)*2)*plim;
+    pp = spline(x,[0 yc(i,:) 0]);
+    yy(:,i) = ppval(pp,xx);
+end
 if dfig == 1 || dfig == 4
-    figure, plot(x,yc,'o',xx,yy,'-')
+    figure; 
+    for i = 1:dim
+    plot(x,yc,'o',xx,yy(:,i),'-'), hold on;
+    end
+    hold off;
 end
-%start = 130;
 
-for i = 1:length(xx)
-spln(round(yy(i))+start,round(xx(i))) = 1;
+for j = 1:dim
+    for i = 1:length(xx)
+        spln(round(yy(i,j))+start(j),round(xx(i))) = 1;
+    end
 end
-
 %%
 
 NRM = sum(dataArray)/sum(sum(spln));

@@ -1,12 +1,13 @@
 % Optimise Snakes 
-band = 120; 
-sigma = 1;
-plim = 18;
+band = [107,120]; 
+sigma = 0.8;
+plim = 20;
 % 
 x = 22:28:478;
 % 
 %y = randi([-3,3],1,length(x));
-y = zeros([1,length(x)]);
+y = [zeros([1,length(x)]);...
+    zeros([1,length(x)])];
 
 %SolidSnake(y,x,band,TstMskArr,sigma,0);
 % % 
@@ -22,7 +23,7 @@ h = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...
 %now run the fitting
 
 [NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
-msk = maskData(mskNd4X,0.2);
+msk = maskData(mskNd4X,0.01);
 %mskArray = reshape(msk, 1, []);
 %[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
 
