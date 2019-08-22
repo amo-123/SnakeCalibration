@@ -40,8 +40,6 @@ NRM = sum(dataArray)/sum(sum(spln));
 spln = NRM.*spln;
 spln = imgaussfilt(spln,sigma);
 
-
-
 if dfig == 2 || dfig == 4
     figure, imagesc(spln);
 end
@@ -51,11 +49,11 @@ end
 splnflt = reshape(spln,1,[]);
 
 if dfig == 3 || dfig == 4
-    figure, plot(dataArray,'.r'), hold on, plot(splnflt,'x');
+    figure, plot(dataArray,'.r'), hold on, plot(splnflt,'x'), hold off;
 end
 
 
-sumRes = sum((dataArray - splnflt).^2);
-
+%sumRes = sum((dataArray - splnflt).^2)./numel(dataArray);
+sumRes = sum(abs(dataArray - splnflt))./numel(dataArray);
 
 end

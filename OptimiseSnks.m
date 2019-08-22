@@ -1,6 +1,6 @@
 % Optimise Snakes 
 tic;
-[~,band] = peak19(Nd4_XLin);
+[peaks,band] = peak19(Nd4_XLin);
 band = round(band);
 %band = [33 40 48 60 74 86 97 109 119 130 140 154 166 175 187 200 212 219 227]; 
 %band = [105 120];
