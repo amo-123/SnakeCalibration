@@ -1,12 +1,14 @@
 % Optimise Snakes 
 tic;
-band = [33 40 48 60 74 86 97 109 119 130 140 154 166 175 187 200 212 219 227]; 
+[~,band] = peak19(Nd4_XLin);
+band = round(band);
+%band = [33 40 48 60 74 86 97 109 119 130 140 154 166 175 187 200 212 219 227]; 
 %band = [105 120];
 dim = length(band);
 sigma = 1;
 plim = 5;
 % 
-x = 22:48:478;
+x = 22:28:478;
 % 
 %y = randi([-3,3],1,length(x));
 %y = zeros([dim,length(x)]);
