@@ -52,8 +52,16 @@ if dfig == 3 || dfig == 4
     figure, plot(dataArray,'.r'), hold on, plot(splnflt,'x'), hold off;
 end
 
+cc = corrcoef(splnflt);
+% for j = 1:dim
+%     for k = 1:length(xx)
+%         for m = 1: length(xx)
+%             cc(j,k) = dataArray(m).*splnflt(m-k)
+%         end
+%     end
+% end
 
-%sumRes = sum((dataArray - splnflt).^2)./numel(dataArray);
-sumRes = sum(abs(dataArray - splnflt))./numel(dataArray);
+%sumRes = sum((dataArray - splnflt).^2)./numel(dataArray) + cc(2);
+sumRes = sum(abs(dataArray - splnflt))./numel(dataArray) + cc;
 
 end
