@@ -4,10 +4,11 @@ tic;
 band = round(band);
 %band = [33 40 48 60 74 86 97 109 119 130 140 154 166 175 187 200 212 219 227]; 
 %band = [105 120];
+
 dim = length(band);
 sigma = 1;
-plim = 5;
-% 
+plim = 10;
+% =]#
 x = 22:28:478;
 % 
 %y = randi([-3,3],1,length(x));
@@ -17,7 +18,7 @@ x = 22:28:478;
 msk = maskData(Nd4_XLin,0.1);
 
 %SolidSnake(y,x,band,TstMskArr,sigma,0);
-% % 
+%% 
 % h = optimset('MaxFunEvals',20000, 'Algorithm', 'levenberg-marquardt',...
 %         'TolX',1e-10,'TolFun',1e-10,'Display','off');
 % %now run the fitting
@@ -30,7 +31,7 @@ h = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...
 %now run the fitting
 resmin = 4e+07;
 
-for i= 1:10
+for i= 1:5
 y = ones(dim, length(x)).*rand;
 
 %[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
@@ -38,17 +39,45 @@ y = ones(dim, length(x)).*rand;
     if RESNORM <= resmin
         resmin = RESNORM;
         minY = NewY;
+        minBand = band;
     end
 end 
 
-%SolidSnake(NewY,x,band,SPLN,sigma,4,plim);
+h2 = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...
+        'TolX',1e-10,'TolFun',1e-10,'Display','off','FinDiffRelStep',1);
+for i= 1:5
+    
+    band = round(band + (randi([-150 150],1,19)./100)');
+    [NewBand, RESNORM,EXITFLAG,OUTPUT] = fminunc('LiquidSnake',band,h2,x,minY,msk,sigma,0,plim);
+    if RESNORM <= resmin
+        resmin = RESNORM;
+        minBand = band;
+    end
+end
 
-SolidSnake(minY,x,band,msk,sigma,4,plim);
+% now run the fitting
+% resmin = 4e+07;
+
+for i= 1:5
+y = ones(dim, length(x)).*rand;
+
+%[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
+[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,minBand,msk,sigma,0,plim);
+    if RESNORM <= resmin
+        resmin = RESNORM;
+        minY = NewY;
+    end
+end 
+
+%SolidSnake(minY,x,NewBand,msk,sigma,4,plim);
+
+SolidSnake(minY,x,minBand,msk,sigma,4,plim);
+
+
 
 %%
 %figure, imagesc(SPLN);
 
-%%
 
 %y = randi([-3,3],1,length(x));
 % stepp = y;

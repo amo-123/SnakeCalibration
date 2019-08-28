@@ -1,20 +1,19 @@
 % SPLINE Model
 % Function to produce a matrix of splines 
 % Given a number of splines and matix size 
-function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
+function [sumRes] = LiquidSnake(start,x,y,data,sigma,dfig,plim)
 
 % x: control points 
 dataArray = reshape(data, 1, []);
 dim = length(start);
 yc = zeros(size(y));
-cc = zeros([3,dim]);
+
 spln= zeros([258,506]);
 xx = 22:478;
 yy = zeros(length(xx),dim);
-allsnakes = zeros(length(xx),dim);
-penalty = 0;
 
 for i = 1:dim
+    start(i) = ((sigmf(start(i),[2 0]) -0.5)*2)*plim;
     yc(i,:) = ((sigmf(y(i,:),[2 0]) -0.5)*2)*plim;
     pp = spline(x,[0 yc(i,:) 0]);
     yy(:,i) = ppval(pp,xx);
@@ -28,10 +27,8 @@ if dfig == 1 || dfig == 4
 end
 
 for j = 1:dim
-    %cc(:,j) = xcorr(yy(:,j),1);
     for i = 1:length(xx)
-        spln(round(yy(i,j))+start(j),round(xx(i))) = 1;
-        allsnakes(i,j) = yy(i,j) + start(j);
+        spln(round(yy(i,j)+abs(start(j))),round(xx(i))) = 1;
     end
 end
 %%
@@ -64,14 +61,8 @@ end
 %         end
 %     end
 % end
-for i = 1:length(xx)
-    if numel(allsnakes(i,:))~=numel(unique(allsnakes(i,:)))
-        penalty = 1e6;
-        break
-    end
-end
 
-sumRes = sqrt(sum((dataArray - splnflt).^2)./numel(dataArray)) + penalty;
-%sumRes = sum(abs(dataArray - splnflt))./numel(dataArray) + sum(cc(1,:));
+sumRes = sqrt(sum((dataArray - splnflt).^2)./numel(dataArray));
+%sumRes = sum(abs(dataArray - splnflt))./numel(dataArray) + cc;
 
 end
