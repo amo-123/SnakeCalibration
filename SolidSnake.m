@@ -1,7 +1,7 @@
 % SPLINE Model
 % Function to produce a matrix of splines 
 % Given a number of splines and matix size 
-function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
+function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim,raw)
 % SolidSnakes
 % [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % Determines a series of Splines (Snakes) which fit a given data set of
@@ -18,6 +18,8 @@ function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % dfig : display figures with input 1-4. 4 for all figures 
 % plim : Pixel limit. This defines the range of motion of the optimised
 % points 
+% raw : Unfiltered data to be used for the correct normalisation of the
+% model
 % Output: 
 % SumRes : Sum of the residuel errors in comparitive measure 
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL
@@ -56,9 +58,16 @@ for j = 1:dim
     %cc(:,j) = xcorr(yy(:,j),1);
     for i = 1:length(xx)
         % Tranform snakes into the matrix spln
-        spln(round(yy(i,j))+start(j),round(xx(i))) = 1;
-        % collect all snake positions 
-        allsnakes(i,j) = yy(i,j) + start(j);
+        switch dim
+            case 19
+                spln(round(yy(i,j))+start(j),round(xx(i))) = 1;
+                % collect all snake positions
+                allsnakes(i,j) = yy(i,j) + start(j);
+            case 41
+                spln(round(xx(i), round(yy(i,j))+start(j))) = 1;
+                % collect all snake positions
+                allsnakes(i,j) = yy(i,j) + start(j);
+        end
     end
 end
 %%
@@ -68,7 +77,7 @@ if dfig == 2 || dfig == 4
 end
 %% 
 % Normalise and Convolve Snake Matrix 
-NRM = sum(dataArray)/sum(sum(spln));
+NRM = sum(sum(raw))/sum(sum(spln));
 
 spln = NRM.*spln;
 spln = imgaussfilt(spln,sigma);
