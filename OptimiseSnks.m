@@ -1,21 +1,29 @@
 % Optimise Snakes 
+% Optimise the 'SolidSnake' function to fit linearity calibration data 
 tic;
-[peaks,band] = peak19(Nd4_XLin);
+load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\Database_Reconstructions\Rec_bulmaraw_H08_X.mat')
+
+Data = output.Statistical_Counts;
+% Determine snake start positions by peaks along the data
+%Data = Nd4_XLin
+[~,band] = peak19(Data);
 band = round(band);
 %band = [33 40 48 60 74 86 97 109 119 130 140 154 166 175 187 200 212 219 227]; 
 %band = [105 120];
 
 dim = length(band);
-sigma = 1;
+sigma = 2;
 plim = 10;
 %
-x = 22:28:478;
+x = 6:20:500; 
 % 
 %y = randi([-3,3],1,length(x));
 %y = zeros([dim,length(x)]);
 
 %msk = maskData(mskNd4X,0.1);
-msk = maskData(Nd4_XLin,0.1);
+%msk = maskData(Nd4_XLin,0.1);
+
+msk = maskData(Data,0.001);
 
 %SolidSnake(y,x,band,TstMskArr,sigma,0);
 %% 
@@ -33,7 +41,7 @@ resmin = 4e+07;
 
 for i= 1:5
 y = ones(dim, length(x)).*rand;
-band = round(band + (randi([-150 150],1,19)./100)');
+%band = round(band + (randi([-150 150],1,19)./100)');
 %[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
 [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
     if RESNORM <= resmin
@@ -59,23 +67,23 @@ SolidSnake(minY,x,minBand,msk,sigma,4,plim);
 % now run the fitting
 % resmin = 4e+07;
 
-for i= 1:10
-y = ones(dim, length(x)).*rand;
-
-%[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
-[NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,minBand,msk,sigma,0,plim);
-    if RESNORM <= resmin
-        resmin = RESNORM;
-        minY = NewY;
-    end
-end 
+% for i= 1:10
+% y = ones(dim, length(x)).*rand;
+% 
+% %[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',y,h,x,band,SPLN,sigma,0,plim);
+% [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,minBand,msk,sigma,0,plim);
+%     if RESNORM <= resmin
+%         resmin = RESNORM;
+%         minY = NewY;,.l
+%     end
+% end 
 
 %SolidSnake(minY,x,NewBand,msk,sigma,4,plim);
-[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',minY,h,x,minBand,msk,sigma,0,plim);
+%[NewY, RESNORM,EXITFLAG,OUTPUT] = fminunc('SolidSnake',minY,h,x,minBand,msk,sigma,0,plim);
 
-SolidSnake(minY,x,minBand,msk,sigma,4,plim);
+%SolidSnake(minY,x,minBand,msk,sigma,4,plim);
 
-SolidSnake(NewY,x,minBand,msk,sigma,4,plim);
+%SolidSnake(NewY,x,minBand,msk,sigma,4,plim);
 
 
 %%
