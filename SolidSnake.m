@@ -1,7 +1,7 @@
 % SPLINE Model
 % Function to produce a matrix of splines 
 % Given a number of splines and matix size 
-function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim,raw)
+function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % SolidSnakes
 % [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % Determines a series of Splines (Snakes) which fit a given data set of
@@ -77,7 +77,7 @@ if dfig == 2 || dfig == 4
 end
 %% 
 % Normalise and Convolve Snake Matrix 
-NRM = sum(sum(raw))/sum(sum(spln));
+NRM = sum(dataArray)/sum(sum(spln));
 
 spln = NRM.*spln;
 spln = imgaussfilt(spln,sigma);

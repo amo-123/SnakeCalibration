@@ -1,19 +1,19 @@
 % Optimise Snakes 
 % Optimise the 'SolidSnake' function to fit linearity calibration data 
 tic;
-load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\Database_Reconstructions\Rec_bulmaraw_H08_Y.mat')
-
-Data = output.Statistical_Counts;
+%load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\Database_Reconstructions\Rec_bulmaraw_H08_Y.mat')
+%Data = output.Statistical_Counts;
+Data = Nd4_XLin;
 % Determine snake start positions by peaks along the data
-
 msk = maskData(Data,0.3);
-[~,band] = peak19(msk,'y');
+[~,band] = peak19(msk,'x');
 band = round(band);
 
 dim = length(band);
 sigma = 2;
 plim = 10;
-x = 8:20:250; 
+%x = 8:20:250; 
+x = 6:20:500; 
 %msk = maskData(Data,0.3);
 
 %% 
@@ -24,13 +24,13 @@ resmin = 4e+07;
 
 for i= 1:5
 y = ones(dim, length(x)).*rand;
-[NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim,Data);
+[NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
     if RESNORM <= resmin
         resmin = RESNORM;
         minY = NewY;
         minBand = band;
     end
 end 
-SolidSnake(minY,x,minBand,msk,sigma,4,plim,Data);
+SolidSnake(minY,x,minBand,msk,sigma,4,plim);
 
 toc;
