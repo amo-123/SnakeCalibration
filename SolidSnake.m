@@ -60,13 +60,13 @@ for j = 1:dim
         % Tranform snakes into the matrix spln
         switch dim
             case 19
-                spln(round(yy(i,j))+start(j),round(xx(i))) = 1;
+                spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
                 % collect all snake positions
-                allsnakes(i,j) = yy(i,j) + start(j);
+                allsnakes(i,j) = round(yy(i,j) + start(j));
             case 41
                 spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
                 % collect all snake positions
-                allsnakes(i,j) = yy(i,j) + start(j);
+                allsnakes(i,j) = round(yy(i,j) + start(j));
         end
     end
 end
