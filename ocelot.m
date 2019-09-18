@@ -1,7 +1,7 @@
-% SPLINE Model
-% Function to produce a matrix of splines 
-% Given a number of splines and matix size 
-function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
+% SPLINE Model Reader
+% Function to read matrix of splines 
+% and produce a transformation  
+function [spln,allsnakes] = ocelot(y,x,start,data,dfig,plim)
 % SolidSnakes
 % [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % Determines a series of Splines (Snakes) which fit a given data set of
@@ -25,7 +25,7 @@ function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL
 %%
 % Initialise Data 
-dataArray = reshape(data, 1, []);
+
 dim = length(start);
 yc = zeros(size(y));
 %cc = zeros([3,dim]);
@@ -33,7 +33,7 @@ spln= zeros([258,506]);
 xx = x(1):x(end);
 yy = zeros(length(xx),dim);
 allsnakes = zeros(length(xx),dim);
-penalty = 0;
+
 %%
 % Create Snakes 
 for i = 1:dim
@@ -61,10 +61,12 @@ for j = 1:dim
         switch dim
             case 19
                 spln(round(yy(i,j))+start(j),round(xx(i))) = 1;
+     %           spln(sub2ind(size(spln),yy(:,j)+start(j),xx(:))) = ones(size(xx));
                 % collect all snake positions
                 allsnakes(i,j) = yy(i,j) + start(j);
             case 41
                 spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
+        %        spln(sub2ind(size(spln),xx(:),(yy(:,j)+start(j))')) = ones(size(xx));
                 % collect all snake positions
                 allsnakes(i,j) = yy(i,j) + start(j);
         end
@@ -75,45 +77,5 @@ end
 if dfig == 2 || dfig == 4
     figure, imagesc(spln*50 + data);
 end
-%% 
-% Normalise and Convolve Snake Matrix 
-NRM = sum(dataArray)/sum(sum(spln));
-
-spln = NRM.*spln;
-spln = imgaussfilt(spln,sigma);
-% Display the normalised data 
-if dfig == 2 || dfig == 4
-    figure, imagesc(spln);
-end
-
-%%
-% Comparitive measure
-splnflt = reshape(spln,1,[]);
-
-if dfig == 3 || dfig == 4
-    figure, plot(dataArray,'.r'), hold on, plot(splnflt,'x'), hold off;
-end
-
-%cc = corrcoef(splnflt);
-% for j = 1:dim
-%     for k = 1:length(xx)
-%         for m = 1: length(xx)
-%             cc(j,k) = dataArray(m).*splnflt(m-k)
-%         end
-%     end
-% end
-% Check snakes overlapping positions 
-for i = 1:length(xx)
-    if numel(allsnakes(i,:))~=numel(unique(allsnakes(i,:)))
-        % Introduce penalty for large residual
-        penalty = 1e6;
-        break
-    end
-end
-%% Simularit measure 
-%Root Mean Square Error  
-sumRes = sqrt(sum((dataArray - splnflt).^2)./numel(dataArray)) + penalty;
-
-%sumRes = sum(abs(dataArray - splnflt))./numel(dataArray) + sum(cc(1,:));
 
 end

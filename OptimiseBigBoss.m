@@ -3,17 +3,26 @@
 tic;
 %load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\Database_Reconstructions\Rec_bulmaraw_H08_Y.mat')
 %Data = output.Statistical_Counts;
-Data = Nd4_XLin;
+%Data = Nd4_XLin;
 % Determine snake start positions by peaks along the data
-msk = maskData(Data,0.3);
-[~,band] = peak19(msk,'x');
+direc = 'y';
+msk = maskData(Data,0.1,direc);
+[~,band] = peak19(msk,direc);
 band = round(band);
 
 dim = length(band);
 sigma = 2;
 plim = 10;
-%x = 8:20:250; 
-x = 6:20:500; 
+
+switch dim
+    case 19
+         x = 22:28:478;
+        %x = 6:20:500; 
+    case 41 
+        x = 8:20:250;
+        
+end
+ 
 %msk = maskData(Data,0.3);
 
 %% 

@@ -15,7 +15,8 @@ dim = length(band);
 sigma = 2;
 plim = 10;
 %
-x = 6:20:500; 
+x = 22:28:478;
+%x = 6:20:500; 
 % 
 %y = randi([-3,3],1,length(x));
 %y = zeros([dim,length(x)]);
