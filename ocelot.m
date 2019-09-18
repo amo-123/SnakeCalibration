@@ -1,7 +1,7 @@
 % SPLINE Model Reader
 % Function to read matrix of splines 
 % and produce a transformation  
-function [spln,allsnakes] = ocelot(y,x,start,data,sigma,dfig,plim)
+function [spln,allsnakes] = ocelot(y,x,start,data,dfig,plim)
 
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL
 %%
@@ -59,8 +59,8 @@ if dfig == 2 || dfig == 4
     figure, imagesc(spln*50 + data);
 end
 
-spln = imgaussfilt(spln,sigma);
-spln = ceil(spln);
+% spln = imgaussfilt(spln,sigma);
+% spln = ceil(spln);
 
 % Display the normalised data 
 if dfig == 2 || dfig == 4
