@@ -1,7 +1,7 @@
 % SPLINE Model Reader
 % Function to read matrix of splines 
 % and produce a transformation  
-function [spln,allsnakes] = ocelot(y,x,start,data,dfig,plim)
+function [spln,allsnakes,xx] = ocelot(y,x,start,data,dfig,plim)
 
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL
 %%
@@ -47,12 +47,12 @@ for j = 1:dim
         % Tranform snakes into the matrix spln
         switch dim
             case 19
-                %spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
+                spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
      %           spln(sub2ind(size(spln),yy(:,j)+start(j),xx(:))) = ones(size(xx));
                 % collect all snake positions
                 allsnakes(i,j) = yy(i,j) + start(j);
             case 41
-                %spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
+                spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
         %        spln(sub2ind(size(spln),xx(:),(yy(:,j)+start(j))')) = ones(size(xx));
                 % collect all snake positions
                 allsnakes(i,j) = yy(i,j) + start(j);

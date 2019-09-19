@@ -1,12 +1,24 @@
-function [Incorr,refimg] = revolver(Xspline,Xx,Xstart,Xdata,Yspline,Yx,Ystart,Ydata,plim)
+function [Incorr,refimg,moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline,Yx,Ystart,Ydata,plim)
 
-[Xspln,Xcoord] = ocelot(Xspline,Xx,Xstart,Xdata,0,plim);
-[Yspln,Ycoord] = ocelot(Yspline,Yx,Ystart,Ydata,0,plim);
+[Xspln,Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xstart,Xdata,0,plim);
+[Yspln,Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ystart,Ydata,0,plim);
+
+
+% figure;
+% for i = 1:19
+%     plot(Xcoordx,Xcoordy(:,i),'r-','LineWidth',1), hold on;
+% end
+% hold on;
+% for i = 1:41
+%     plot(Ycoordy(:,i), Ycoordx,'b-','LineWidth',1), hold on;
+%     
+% end
+hold off;
 
 refX = zeros(258,506);
 refY = zeros(258,506);
 for i = 1:length(Ystart)
-    if Ycoord(:,i) == Xcoord(:,i)
+%     if Ycoord(:,i) == Xcoord(:,i)
         
     refY(Yx(1):Yx(end),Ystart(i)) = 1;
 end
@@ -23,13 +35,27 @@ end
 refimg = refX + refY;
 Incorr = Xspln + Yspln;
 
-% Incorr(Incorr == 1) = 0;
-% 
-% refimg(refimg == 1) = 0;
-% 
-% Incorr(Incorr == 2) = 1;
-% 
-% refimg(refimg == 2) = 1;
+Incorr(Incorr == 1) = 0;
 
+refimg(refimg == 1) = 0;
+
+Incorr(Incorr == 2) = 1;
+
+refimg(refimg == 2) = 1;
+
+[a,b] = find(refimg == 1);
+[c,d] = find(Incorr == 1);
+
+q = zeros(size(a));
+
+for j = 1:length(b)
+[~,q(j)] = min((c-a(j)).^2 + (d-b(j)).^2);
+end
+
+c = c(q);
+d = d(q);
+
+moving = [c,d];
+fixed = [a,b];
 end
 
