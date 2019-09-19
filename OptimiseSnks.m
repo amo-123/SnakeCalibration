@@ -6,7 +6,7 @@ load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\Database_Reconstructions\Rec
 Data = output.Statistical_Counts;
 % Determine snake start positions by peaks along the data
 %Data = Nd4_XLin
-[~,band] = peak19(Data);
+[~,band] = peak19(Data,'x');
 band = round(band);
 %band = [33 40 48 60 74 86 97 109 119 130 140 154 166 175 187 200 212 219 227]; 
 %band = [105 120];
@@ -24,7 +24,7 @@ x = 22:28:478;
 %msk = maskData(mskNd4X,0.1);
 %msk = maskData(Nd4_XLin,0.1);
 
-msk = maskData(Data,0.001);
+msk = maskData(Data,0.001,'n');
 
 %SolidSnake(y,x,band,TstMskArr,sigma,0);
 %% 

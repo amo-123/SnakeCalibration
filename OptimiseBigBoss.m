@@ -1,5 +1,6 @@
 % Optimise Snakes 
 % Optimise the 'SolidSnake' function to fit linearity calibration data 
+%function [Xspline,Yspline,Xstart,Ystart]
 tic;
 %load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\Database_Reconstructions\Rec_bulmaraw_H08_X.mat')
 %Data = output.Statistical_Counts;
@@ -42,7 +43,7 @@ for c = 1:2
     %now run the fitting
     resmin = 4e+07;
     
-    for i= 1:5
+    for i= 1:10
         y = ones(dim, length(x)).*rand;
         [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
         if RESNORM <= resmin
