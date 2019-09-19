@@ -13,7 +13,7 @@ function [Incorr,refimg,moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline
 %     plot(Ycoordy(:,i), Ycoordx,'b-','LineWidth',1), hold on;
 %     
 % end
-hold off;
+% hold off;
 
 refX = zeros(258,506);
 refY = zeros(258,506);
@@ -47,13 +47,18 @@ refimg(refimg == 2) = 1;
 [c,d] = find(Incorr == 1);
 
 q = zeros(size(a));
+p = zeros(size(a));
 
-for j = 1:length(b)
-[~,q(j)] = min((c-a(j)).^2 + (d-b(j)).^2);
+for i = 1:length(a)
+    [~,q(i)] = min(sqrt((c-a(i)).^2));
+end
+
+for i = 1:length(a)
+    [~,p(i)] = min(sqrt((d-b(i)).^2));
 end
 
 c = c(q);
-d = d(q);
+d = d(p);
 
 moving = [c,d];
 fixed = [a,b];
