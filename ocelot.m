@@ -50,12 +50,12 @@ for j = 1:dim
                 spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
      %           spln(sub2ind(size(spln),yy(:,j)+start(j),xx(:))) = ones(size(xx));
                 % collect all snake positions
-                allsnakes(i,j) = yy(i,j) + start(j);
+                allsnakes(i,j) = round(yy(i,j) + start(j));
             case 41
                 spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
         %        spln(sub2ind(size(spln),xx(:),(yy(:,j)+start(j))')) = ones(size(xx));
                 % collect all snake positions
-                allsnakes(i,j) = yy(i,j) + start(j);
+                allsnakes(i,j) = round(yy(i,j) + start(j));
         end
     end
 end

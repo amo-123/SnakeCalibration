@@ -4,16 +4,16 @@ function [Incorr,refimg,moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline
 [Yspln,Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ystart,Ydata,0,plim);
 
 
-% figure;
-% for i = 1:19
-%     plot(Xcoordx,Xcoordy(:,i),'r-','LineWidth',1), hold on;
-% end
-% hold on;
-% for i = 1:41
-%     plot(Ycoordy(:,i), Ycoordx,'b-','LineWidth',1), hold on;
-%     
-% end
-% hold off;
+figure;
+for i = 1:19
+    plot(Xcoordx,Xcoordy(:,i),'r-','LineWidth',1), hold on;
+end
+hold on;
+for i = 1:41
+    plot(Ycoordy(:,i), Ycoordx,'b-','LineWidth',1), hold on;
+    
+end
+hold off;
 
 refX = zeros(258,506);
 refY = zeros(258,506);
@@ -31,6 +31,24 @@ end
 % refY = imgaussfilt(refY,sigma);
 % refY = ceil(refY);
 
+Xint = zeros([41,19]);
+Yint = zeros([41,19]);
+
+for i = 1:41
+    for j = 1:19
+        
+        [~,aa,~] = intersect(Ycoordx(:),Xcoordy(:,j));
+        
+        [~,ii,~] = intersect(Xcoordx(:),Ycoordy(:,i));
+        
+        Xint(i,j) = intersect(Xcoordy(ii,j),Ycoordx(aa));
+        
+        Yint(i,j) = intersect(Ycoordy(aa,i),Xcoordx(ii));
+        
+        
+    end
+    
+end
 
 refimg = refX + refY;
 Incorr = Xspln + Yspln;
@@ -50,11 +68,11 @@ q = zeros(size(a));
 p = zeros(size(a));
 
 for i = 1:length(a)
-    [~,q(i)] = min(sqrt((c-a(i)).^2));
+    [~,q(i)] = min(sqrt((c-a(i).^2)));
 end
 
 for i = 1:length(a)
-    [~,p(i)] = min(sqrt((d-b(i)).^2));
+    [~,p(i)] = min(sqrt((d-b(i).^2)));
 end
 
 c = c(q);
