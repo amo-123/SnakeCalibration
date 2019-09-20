@@ -1,7 +1,7 @@
 % SPLINE Model Reader
 % Function to read matrix of splines 
 % and produce a transformation  
-function [spln,allsnakes,xx] = ocelot(y,x,start,data,dfig,plim)
+function [spln,allsnakes,xx] = ocelot(y,x,start,data,dfig,plim,samp)
 
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL
 %%
@@ -11,7 +11,7 @@ dim = length(start);
 yc = zeros(size(y));
 %cc = zeros([3,dim]);
 spln= zeros([258,506]);
-xx = x(1):x(end);
+xx = x(1):samp:x(end);
 yy = zeros(length(xx),dim);
 allsnakes = zeros(length(xx),dim);
 
@@ -32,9 +32,9 @@ if dfig == 1 || dfig == 4
     for i = 1:dim
         switch dim
             case 19
-                plot(x,yc(i,:) + start(i),'yo', xx,yy(:,i) + start(i),'r-','LineWidth',1), hold on;
+                plot(x,yc(i,:) + start(i),'yo', xx,yy(:,i) + start(i),'r-','LineWidth',0.8), hold on;
             case 41
-                plot(yc(i,:) + start(i),x,'yo', yy(:,i) + start(i), xx,'r-','LineWidth',1), hold on;
+                plot(yc(i,:) + start(i),x,'yo', yy(:,i) + start(i), xx,'r-','LineWidth',0.8), hold on;
         end
     end
     hold off;
@@ -50,12 +50,12 @@ for j = 1:dim
                 spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
      %           spln(sub2ind(size(spln),yy(:,j)+start(j),xx(:))) = ones(size(xx));
                 % collect all snake positions
-                allsnakes(i,j) = round(yy(i,j) + start(j));
+                allsnakes(i,j) = yy(i,j) + start(j);
             case 41
                 spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
         %        spln(sub2ind(size(spln),xx(:),(yy(:,j)+start(j))')) = ones(size(xx));
                 % collect all snake positions
-                allsnakes(i,j) = round(yy(i,j) + start(j));
+                allsnakes(i,j) = yy(i,j) + start(j);
         end
     end
 end
