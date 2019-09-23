@@ -3,9 +3,28 @@ function [out,moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline,Yx,Ystart
 [Xspln,Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xstart,Xdata,0,plim,samp);
 [Yspln,Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ystart,Ydata,0,plim,samp);
 
+% Xx = Xx(1):samp:Xx(end);
+% 
+% Yx = Yx(1):samp:Yx(end);
+
+% pixX = 88.89/length(Xx);
+% 
+% pixY = 40/length(Yx);
+
+midX = 506/2;
+
+midY = 258/2;
+
+Xlinspace = 2.2222/0.2;
+
+% Ylinspace = 2.22/0.2;
+
+Xgeo = (-20:20)*Xlinspace + midX;
+
+Ygeo = (-9:9)*Xlinspace + midY;
 
 figure(1);
-for i = 1:19
+for i = 1:19                                                                                                                                                                                                    
     plot(Xcoordx,Xcoordy(:,i),'r-'), hold on;
 end
 hold on;
@@ -36,6 +55,7 @@ end
 xy = zeros([2,19,41]);
 Refxy = zeros([2,19,41]);
 
+
 for i = 1:41
     for j = 1:19
 %         [~,aa,~] = intersect(Ycoordx(:),Xcoordy(:,j));
@@ -46,7 +66,7 @@ for i = 1:41
 %         
 %         Yint(i,j) = intersect(Ycoordy(aa,i),Xcoordx(ii));
         xy(:,j,i) = MGS(Xcoordy(:,j),Xcoordx,Ycoordy(:,i),Ycoordx);
-        Refxy(:,j,i) = MGS((ones(size(Xcoordx)).*Xstart(j))',Xcoordx,(ones(size(Ycoordx)).*Ystart(i))',Ycoordx);
+        Refxy(:,j,i) = [Xgeo(i),Ygeo(j)];
         figure(1)
         hold on, plot(xy(1,j,i),xy(2,j,i),'xk'), hold off
         hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'og'), hold off

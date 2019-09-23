@@ -7,11 +7,13 @@ tic;
 %Data = Nd4_XLin;
 % Determine snake start positions by peaks along the data
 addpath('Data')
+fn = 'Nd8SplineData';
 load('Nd8XLin.mat')
 Xdata = Data;
+%Xdata = Nd4_XLin;
 load('Nd8YLin.mat')
 Ydata = Data;
-
+%Ydata = Nd4_YLin;
 direc = 'x';
 DATA = Xdata;
 
@@ -68,3 +70,14 @@ for c = 1:2
     DATA = Ydata;
 end
 toc;
+
+%%
+
+Xx = 15:20:500;
+
+Yx = 8:20:250;
+
+save(['.\Output\',fn],'Xspline','Xx','Xstart','Xdata','Yspline','Yx','Ystart','Ydata','plim');
+
+clearvars;
+

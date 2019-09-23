@@ -4,3 +4,7 @@ Data/
 OptimiseSnks\.asv
 
 *.asv
+
+*.mat
+
+*.fig

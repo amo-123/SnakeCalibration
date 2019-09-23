@@ -1,4 +1,4 @@
-figure;
+figure(1);
 for i = 1:19
     plot(Xcoordx,Xcoordy(:,i),'r-'), hold on;
 end
