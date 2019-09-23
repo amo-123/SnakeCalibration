@@ -8,6 +8,10 @@ if cut == 'y'
 else
 end
 
+data(1,:) = [];
+data(end,:) = [];
+data = [zeros(256,3),data,zeros(256,3)];
+
 data_max = max(data(:));
 mask = data > (data_max*mask_threshold);
 

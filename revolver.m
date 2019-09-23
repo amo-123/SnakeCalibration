@@ -23,9 +23,9 @@ function [moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline,Yx,Ystart,Yda
 [Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xstart,Xdata,0,plim,samp);
 [Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ystart,Ydata,0,plim,samp);
 
-midX = 506/2;
+midX = 512/2;
 
-midY = 258/2;
+midY = 256/2;
 
 Xlinspace = 2.2222/0.2;
 
