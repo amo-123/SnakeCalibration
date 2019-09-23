@@ -18,8 +18,6 @@ function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % dfig : display figures with input 1-4. 4 for all figures 
 % plim : Pixel limit. This defines the range of motion of the optimised
 % points 
-% raw : Unfiltered data to be used for the correct normalisation of the
-% model
 % Output: 
 % SumRes : Sum of the residuel errors in comparitive measure 
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL

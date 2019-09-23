@@ -37,7 +37,6 @@ for c = 1:2
             
     end
     
-    %msk = maskData(Data,0.3);
     
     %%
     h = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...

@@ -1,4 +1,4 @@
-% SPLINE Model
+% Do not use this SPLINE Model
 % Function to produce a matrix of splines 
 % Given a number of splines and matix size 
 function [sumRes] = LiquidSnake(start,x,y,data,sigma,dfig,plim)
