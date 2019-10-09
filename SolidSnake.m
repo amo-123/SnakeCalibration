@@ -27,7 +27,7 @@ dataArray = reshape(data, 1, []);
 dim = length(start);
 yc = zeros(size(y));
 %cc = zeros([3,dim]);
-spln= zeros([258,506]);
+spln= zeros([256,512]);
 xx = x(1):x(end);
 yy = zeros(length(xx),dim);
 allsnakes = zeros(length(xx),dim);
@@ -71,14 +71,29 @@ end
 %%
 % Display snakes in Matrix space overlay the Data 
 if dfig == 2 || dfig == 4
-    figure, imagesc(spln*50 + data);
+        figure; 
+    imagesc(data), hold on;
+    for i = 1:dim
+        switch dim
+            case 19
+                plot(x,yc(i,:) + start(i),'yo', xx,yy(:,i) + start(i),'r-','LineWidth',0.8), hold on;
+            case 41
+                plot(yc(i,:) + start(i),x,'yo', yy(:,i) + start(i), xx,'r-','LineWidth',0.8), hold on;
+        end
+    end
+    hold off;
 end
 %% 
 % Normalise and Convolve Snake Matrix 
+
 NRM = sum(dataArray)/sum(sum(spln));
 
-spln = NRM.*spln;
 spln = imgaussfilt(spln,sigma);
+
+spln = NRM.*spln;
+
+
+
 % Display the normalised data 
 if dfig == 2 || dfig == 4
     figure, imagesc(spln);
