@@ -20,6 +20,16 @@ function [tform, moving, fixed] = revolver(Xspline,Xx,Xstart,Xdata,Xplim,Yspline
 % moving : moving control points 
 % fixed : fixed control points 
 % Author: Ashley Morhana, ashley.morahan.17@ucl.ac.uk, UCL
+
+Xdata(1,:) = [];
+Xdata(end,:) = [];
+Xdata = [zeros(256,3),Xdata,zeros(256,3)];
+
+Ydata(1,:) = [];
+Ydata(end,:) = [];
+Ydata = [zeros(256,3),Ydata,zeros(256,3)];
+
+
 [Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xstart,Xdata,0,Xplim,samp);
 [Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ystart,Ydata,0,Yplim,samp);
 

@@ -5,10 +5,10 @@
 
 % addpath('.\Output');
 
-folder = '.\Output';
+folder = '.\Output\Milan';
 files = dir(fullfile(folder,'*.mat'));
 
-samp  = 0.1;
+samp  = 1;
 
 for i = 1:length(files)
 % [filename,filepath] = uigetfile([pwd,'\',FilterSpec], 'Select .data file', 'MultiSelect', 'off');
@@ -18,12 +18,13 @@ filepath = [files(i).folder,'\'];
 
 data = open([filepath,filename]);
 
+
 [tform, moving, fixed] = revolver(data.Xspline,data.Xx,data.Xstart,data.Xdata,data.Xplim,data.Yspline,data.Yx,data.Ystart,data.Ydata,data.Yplim,samp);
 
 if i < 10
-    fn = ['.\Transforms\Tform_H0', int2str(i),'_0p1samp_Milan.mat'];
+    fn = ['.\Transforms\Tform_H0', int2str(i),'_1samp_Milan.mat'];
 else
-    fn = ['.\Transforms\Tform_H', int2str(i),'_0p1samp_Milan.mat'];
+    fn = ['.\Transforms\Tform_H', int2str(i),'_1samp_Milan.mat'];
 end
 
 save(fn,'tform','moving','fixed');
