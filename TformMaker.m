@@ -10,7 +10,7 @@ files = dir(fullfile(folder,'*.mat'));
 
 samp  = 1;
 
-for i = 1:length(files)
+for i = 5:length(files)
 % [filename,filepath] = uigetfile([pwd,'\',FilterSpec], 'Select .data file', 'MultiSelect', 'off');
 
 filename = files(i).name;

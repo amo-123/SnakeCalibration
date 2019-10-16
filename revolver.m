@@ -43,16 +43,16 @@ Xgeo = (-20:20)*Xlinspace + midX;
 
 Ygeo = (-9:9)*Xlinspace + midY;
 
-% figure(1);
-% for i = 1:19                                                                                                                                                                                                    
-%     plot(Xcoordx,Xcoordy(:,i),'r-'), hold on;
-% end
-% hold on;
-% for i = 1:41
-%     plot(Ycoordy(:,i), Ycoordx,'b-'), hold on;
-%     
-% end
-% hold off;
+figure(1);
+for i = 1:19                                                                                                                                                                                                    
+    plot(Xcoordx,Xcoordy(:,i),'r-'), hold on;
+end
+hold on;
+for i = 1:41
+    plot(Ycoordy(:,i), Ycoordx,'b-'), hold on;
+    
+end
+hold off;
 %% 
 xy = zeros([2,19,41]);
 Refxy = zeros([2,19,41]);
@@ -62,9 +62,9 @@ for i = 1:41
     for j = 1:19
         xy(:,j,i) = MGS(Xcoordy(:,j),Xcoordx,Ycoordy(:,i),Ycoordx);
         Refxy(:,j,i) = [Xgeo(i),Ygeo(j)];
-%         figure(1)
-%         hold on, plot(xy(1,j,i),xy(2,j,i),'xk'), hold off
-%         hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'og'), hold off
+        figure(1)
+        hold on, plot(xy(1,j,i),xy(2,j,i),'xk'), hold off
+        hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'og'), hold off
     end
     
 end

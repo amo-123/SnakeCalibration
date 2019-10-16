@@ -5,14 +5,16 @@
 % Mass load edit 
 
 % addpath('.\Output');
-
+Uflood = 1; % change to 1 to include U correction 
 folder = uigetdir;
 files = dir(fullfile(folder,'*.mat'));
 
 Tfolder = '.\Transforms\Samp0p1\';
 Tfiles = dir(fullfile(Tfolder,'*.mat'));
 
-Uniform = load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Uniform\Correct_samp0p1_Full_Rec_5ml1Mbq_Tc99m_flood_Tm10_hv35_gain12_th30_all_long_00.mat');
+if Uflood
+    Uniform = load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Uniform\Correct_samp0p1_Full_Rec_5ml1Mbq_Tc99m_flood_Tm10_hv35_gain12_th30_all_long_00.mat');
+end
 
 for i = 1:length(files)
 % [filename,filepath] = uigetfile([pwd,'\',FilterSpec], 'Select .data file', 'MultiSelect', 'off');
@@ -36,22 +38,28 @@ for j = 1:num_nod
     Tfilepath = [Tfiles(j).folder,'\'];
     
     Tform = open([Tfilepath,Tfilename]);
-    try 
-    NodeData = data.NodeData(:,:,j);
+    try
+        NodeData = data.NodeData(:,:,j);
     catch
-    NodeData = data.output.Statistical_Counts;
+        NodeData = data.output.Statistical_Counts;
     end
     NodeData(1,:) = [];
     NodeData(end,:) = [];
     NodeData = [zeros(256,3),NodeData,zeros(256,3)];
     XYCorrData(:,:,j) =  imwarp(NodeData,Tform.tform, 'OutputView', imref2d(size(NodeData)));
-    tstUni = Uniform.CorrData(:,:,j);
-    tstUni(tstUni < (mean(mean(tstUni(15:243,10:495))))*0.2) =  0;
-    nUni = tstUni./(mean(mean(tstUni(15:243,10:495))));
-    UCorrData(:,:,j) = XYCorrData(:,:,j)./nUni;
+    if Uflood
+        tstUni = Uniform.XYCorrData(:,:,j);
+        tstUni(tstUni < (mean(mean(tstUni(15:243,28:495))))*0.5) =  0;
+        nUni = tstUni./(mean(mean(tstUni(15:243,28:495))));
+        nUni(nUni <0.01) = 1;
+        UCorrData(:,:,j) = XYCorrData(:,:,j)./nUni;
+    end
 end
 
 fn = ['E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Correct_samp0p1_',filename];
-save(fn,'XYCorrData','UCorrData');
-
+if Uflood
+    save(fn,'XYCorrData','UCorrData');
+else
+    save(fn,'XYCorrData');
+end
 end
