@@ -62,9 +62,11 @@ for i = 1:41
     for j = 1:19
         xy(:,j,i) = MGS(Xcoordy(:,j),Xcoordx,Ycoordy(:,i),Ycoordx);
         Refxy(:,j,i) = [Xgeo(i),Ygeo(j)];
+        %vec = Refxy(:,j,i) - xy(:,j,i); 
         figure(1)
         hold on, plot(xy(1,j,i),xy(2,j,i),'xk'), hold off
-        hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'og'), hold off
+        hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'om'), hold off
+        %hold on, quiver(xy(1,j,i),xy(2,j,i),vec(1),vec(2),'Color','c'),hold off
     end
     
 end

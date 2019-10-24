@@ -9,11 +9,11 @@ Uflood = 1; % change to 1 to include U correction
 folder = uigetdir;
 files = dir(fullfile(folder,'*.mat'));
 
-Tfolder = '.\Transforms\Samp0p1\';
+Tfolder = '.\Transforms\BF';
 Tfiles = dir(fullfile(Tfolder,'*.mat'));
 
 if Uflood
-    Uniform = load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Uniform\Correct_samp0p1_Full_Rec_5ml1Mbq_Tc99m_flood_Tm10_hv35_gain12_th30_all_long_00.mat');
+    Uniform = load('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Uniform\Correct_samp1_BF_Full_Rec_5ml1Mbq_Tc99m_flood_Tm10_hv35_gain12_th30_all_long_01.mat');
 end
 
 for i = 1:length(files)
@@ -34,8 +34,18 @@ XYCorrData = zeros(256,512,num_nod);
 UCorrData = zeros(256,512,num_nod);
 
 for j = 1:num_nod
-    Tfilename = Tfiles(j).name;
-    Tfilepath = [Tfiles(j).folder,'\'];
+    if num_nod <= 1
+        if i <= 20
+            Tfilename = Tfiles(i).name;
+            Tfilepath = [Tfiles(i).folder,'\'];
+        else
+            Tfilename = Tfiles(i-20).name;
+            Tfilepath = [Tfiles(i-20).folder,'\'];
+        end
+    else
+        Tfilename = Tfiles(j).name;
+        Tfilepath = [Tfiles(j).folder,'\'];
+    end
     
     Tform = open([Tfilepath,Tfilename]);
     try
@@ -54,9 +64,10 @@ for j = 1:num_nod
         nUni(nUni <0.01) = 1;
         UCorrData(:,:,j) = XYCorrData(:,:,j)./nUni;
     end
+
 end
 
-fn = ['E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Correct_samp0p1_',filename];
+fn = ['E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Correct_samp1_BF_manualEW',filename];
 if Uflood
     save(fn,'XYCorrData','UCorrData');
 else

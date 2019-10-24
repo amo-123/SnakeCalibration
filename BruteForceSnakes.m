@@ -1,7 +1,7 @@
 
-load('./Output/Milan/Nd20SplineData.mat');
+load('./Output/Nd16SplineData_Milan_BF.mat');
 %%
-fn = 'Nd20SplineData_Milan_BF';
+fn = 'NdtstSplineData_Milan_BF';
 samp = 0.1;
 
 %%
