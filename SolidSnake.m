@@ -92,6 +92,10 @@ spln = imgaussfilt(spln,sigma);
 
 spln = NRM.*spln;
 
+data(data < (mean(mean(data)))*0.5) =  0;
+ndata = data./(mean(mean(data)));
+ndata(ndata <0.01) = 1;
+spln = spln./ndata;
 
 
 % Display the normalised data 

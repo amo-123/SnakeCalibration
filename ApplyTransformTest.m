@@ -67,7 +67,7 @@ for j = 1:num_nod
 
 end
 
-fn = ['E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Correct_samp1_BF_manualEW',filename];
+fn = ['E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Corrected\Correct_samp1_BF_',filename];
 if Uflood
     save(fn,'XYCorrData','UCorrData');
 else

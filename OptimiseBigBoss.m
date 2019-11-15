@@ -2,33 +2,36 @@
 % Optimise the 'SolidSnake' function to fit linearity calibration data 
 %function [Xspline,Yspline,Xstart,Ystart]
 tic;
-addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Linearity\Milan')
+%addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Linearity\London')
+addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Lnd_UXY\XLin')
+addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Lnd_UXY\YLin')
 
-addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Uniformity\UCdata')
+%addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Uniformity\UCdata')
+addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Lnd_UXY\Uniformity')
 
 %Data = output.Statistical_Counts;
 %Data = Nd4_XLin;
 % Determine snake start positions by peaks along the data
 %addpath('Data')
 
-load('Full_Rec_5ml1Mbq_Tc99m_flood_Tm10_hv35_gain12_th30_all_long_00');
-Udata = NodeData(:,:,1);
-fn = 'Nd10SplineData_Milan_UCtst';
+load('Ldn_20190909_Tc99m_Flood_1p8Mbq_1325time_10min');
+Udata = NodeData(:,:,8);
+fn = 'Nd01SplineData_Lnd_20190909';
 %load('Nd8XLin.mat')
-load('LinX_det10sep');
-%Xdata = output.Statistical_Counts;
-Xdata = NodeData;
+load('Rec_bulmaraw_H08_X_20190909');
+Xdata = output.Statistical_Counts;
+%Xdata = NodeData;
 %Xdata = Nd4_XLin;
 %load('Nd8YLin.mat')
-load('LinY_det10sep');
-%Ydata = output.Statistical_Counts;
-Ydata = NodeData;
+load('Rec_bulmaraw_H08_Y_20190909');
+Ydata = output.Statistical_Counts;
+%Ydata = NodeData;
 %Ydata = Nd4_YLin;
 direc = 'x';
 DATA = Xdata;
 %%
-flt = 0.1; %change at bottom too
-sigma = 1.2;
+flt = 0.05; %change at bottom too
+sigma = 1.9;
 %%
 
 
@@ -47,13 +50,13 @@ for c = 1:2
             plim = 12;
             band = band - 1;
             Xx = x;
-            targ = 99;
+            targ = 40;
         case 41
             x = 8:12:250;
             plim = 12;
             band = band - 5;
             Yx = x;
-            targ = 99;
+            targ = 40;
     end
     
     
@@ -89,7 +92,7 @@ for c = 1:2
         plot(i,RESNORM,'x');
         hold off;
         i = i + 1; 
-        if i > 10
+        if i > 5
             break
         end
     end
@@ -109,8 +112,8 @@ for c = 1:2
     
     direc = 'y';
     DATA = Ydata;
-    flt = 0.1;
-    sigma = 1.2;
+    flt = 0.05;
+    sigma = 1.9;
     
 end
 toc;

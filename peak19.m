@@ -23,7 +23,7 @@ switch dim
         y = x(:,any(x,1));
         y = mean(y,2);
         sigma = w(:,any(w,1));
-        sigma = mean(w,2);
+        sigma = mean(sigma,2);
     case 'y'
         x = zeros(41, size(data,1));
         w = zeros(41, size(data,1));
@@ -47,7 +47,7 @@ switch dim
         y = x(:,any(x,1));
         y = mean(y,2);
         sigma = w(:,any(w,1));
-        sigma = mean(w,2);
+        sigma = mean(sigma,2);
 end
 
 end
