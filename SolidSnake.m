@@ -72,7 +72,7 @@ end
 % Display snakes in Matrix space overlay the Data 
 if dfig == 2 || dfig == 4
         figure; 
-    imagesc(data), hold on;
+    imagesc(data.*10), hold on;
     for i = 1:dim
         switch dim
             case 19
@@ -86,12 +86,10 @@ end
 %% 
 % Normalise and Convolve Snake Matrix 
 
-NRM = sum(dataArray)/sum(sum(spln));
-
 spln = imgaussfilt(spln,sigma);
 
-spln = NRM.*spln;
-
+spln = mean(dataArray)*((spln-min(min(spln)))./(max(max(spln))-min(min(spln))));
+% 
 data(data < (mean(mean(data)))*0.5) =  0;
 ndata = data./(mean(mean(data)));
 ndata(ndata <0.01) = 1;
@@ -100,7 +98,11 @@ spln = spln./ndata;
 
 % Display the normalised data 
 if dfig == 2 || dfig == 4
-    figure, imagesc(spln);
+    figure; 
+    subplot(1,2,1);
+    imagesc(spln);
+    subplot(1,2,2);
+    imagesc(data);
 end
 
 %%
@@ -129,7 +131,7 @@ for i = 1:length(xx)
 end
 %% Simularit measure 
 %Root Mean Square Error  
-sumRes = sqrt(sum((dataArray - splnflt).^2)./numel(dataArray)) + penalty;
+sumRes = (sqrt(sum((dataArray - splnflt).^2)./numel(dataArray))/mean(dataArray)) + penalty;
 
 %sumRes = sum(abs(dataArray - splnflt))./numel(dataArray) + sum(cc(1,:));
 

@@ -57,8 +57,8 @@ if dfig == 1
                     labels{j} = int2str(j);
                 end
                 plot(x,yc(i,:) + start(i),'co', xx,yy(:,i) + start(i),'r-','LineWidth',0.8);
-                text(x,yc(i,:) + start(i),labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
-                text(x(1),yc(i,1) + start(i),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
+                %text(x,yc(i,:) + start(i),labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
+                %text(x(1),yc(i,1) + start(i),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
                 hold on;
             case 41
                 labels = cell(size(x));
@@ -68,8 +68,8 @@ if dfig == 1
                    
                 end
                 plot(yc(i,:) + start(i),x,'yo', yy(:,i) + start(i), xx,'r-','LineWidth',0.8);
-                text(yc(i,:) + start(i),x,labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
-                text(yc(i,1) + start(i),x(1),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
+                %text(yc(i,:) + start(i),x,labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
+                %text(yc(i,1) + start(i),x(1),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
                 hold on;
         end
     end

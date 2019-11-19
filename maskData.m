@@ -26,7 +26,7 @@ if flag
     Udata(end,:) = [];
     Udata = [zeros(256,3),Udata,zeros(256,3)];
     
-    Udata(Udata < (mean(mean(Udata(:,10:end))))*0.5) =  0;
+    Udata(Udata < (mean(mean(Udata(:,10:end))))*0.3) =  0;
     nUni = Udata./(mean(mean(Udata(:,10:end))));
     nUni(nUni <0.01) = 1;
     data = data./nUni;

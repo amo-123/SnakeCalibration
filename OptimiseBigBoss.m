@@ -15,15 +15,15 @@ addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reco
 %addpath('Data')
 
 load('Ldn_20190909_Tc99m_Flood_1p8Mbq_1325time_10min');
-Udata = NodeData(:,:,8);
+Udata = NodeData(:,:,15);
 fn = 'Nd01SplineData_Lnd_20190909';
 %load('Nd8XLin.mat')
-load('Rec_bulmaraw_H08_X_20190909');
+load('Rec_bulmaraw_H15_X_20190909');
 Xdata = output.Statistical_Counts;
 %Xdata = NodeData;
 %Xdata = Nd4_XLin;
 %load('Nd8YLin.mat')
-load('Rec_bulmaraw_H08_Y_20190909');
+load('Rec_bulmaraw_H15_Y_20190909');
 Ydata = output.Statistical_Counts;
 %Ydata = NodeData;
 %Ydata = Nd4_YLin;
@@ -48,15 +48,15 @@ for c = 1:2
             %x = 22:28:478;
             x = 15:16:500;
             plim = 12;
-            band = band - 1;
+            %band = band;
             Xx = x;
-            targ = 40;
+            targ = 3;
         case 41
             x = 8:12:250;
             plim = 12;
-            band = band - 5;
+            %band = band;
             Yx = x;
-            targ = 40;
+            targ = 3;
     end
     
     
@@ -68,7 +68,7 @@ for c = 1:2
     figure;
     i = 1;
     while resmin > targ
-        y = ones(dim, length(x)).*rand;
+        y = (rand(dim, length(x)) - 0.5)*0.1;
         if flag
             y = minY;
                 h = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...
@@ -78,7 +78,7 @@ for c = 1:2
 %                 plim = 2;
 %             end
         end
-        [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk*10,sigma,0,plim);
+        [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
         if RESNORM <= resmin
             resmin = RESNORM;
             minY = NewY;
