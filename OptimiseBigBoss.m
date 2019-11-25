@@ -38,26 +38,33 @@ sigma = 1.9;
 for c = 1:2
     flag = 0;
     msk = maskData(DATA,flt,direc,Udata,1);
-    [~,band,~] = peak19(msk,direc);
     
-    dim = length(band);
+    
+    switch direc
+        case 'x'
+            x = 20:15:490;
+            Xx = x;
+        case 'y'
+            x = 15:10:240;
+            Yx = x;
+    end
+
 
     
-    switch dim
-        case 19
-            %x = 22:28:478;
-            x = 15:16:500;
-            plim = 12;
-            %band = band;
-            Xx = x;
-            targ = 3;
-        case 41
-            x = 8:12:250;
-            plim = 12;
-            %band = band;
-            Yx = x;
-            targ = 3;
-    end
+%     switch dim
+%         case 19
+%             %x = 22:28:478;
+%             x = 15:16:500;
+             plim = 12;
+%             %band = band;
+             
+             targ = 3;
+%         case 41
+%             x = 8:12:250;
+%             plim = 12;
+%             %band = band;
+%             targ = 3;
+%     end
     
     
     %%
@@ -68,7 +75,10 @@ for c = 1:2
     figure;
     i = 1;
     while resmin > targ
-        y = (rand(dim, length(x)) - 0.5)*0.1;
+        %y = (rand(dim, length(x)) - 0.5)*0.1;
+        [x,y] = peak19(msk,direc,x);
+        
+        dim = size(y,1);
         if flag
             y = minY;
                 h = optimset('MaxFunEvals',1000, 'Algorithm', 'levenberg-marquardt',...
@@ -78,7 +88,7 @@ for c = 1:2
 %                 plim = 2;
 %             end
         end
-        [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,band,msk,sigma,0,plim);
+        [NewY, RESNORM,~,~] = fminunc('SolidSnake',y,h,x,msk,sigma,0,plim);
         if RESNORM <= resmin
             resmin = RESNORM;
             minY = NewY;
@@ -96,7 +106,7 @@ for c = 1:2
             break
         end
     end
-    SolidSnake(minY,x,minBand,msk,sigma,4,plim);
+    SolidSnake(minY,x,msk,sigma,4,plim);
     
     switch dim
         case 19

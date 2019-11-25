@@ -1,7 +1,7 @@
 % SPLINE Model Reader
 % Function to read matrix of splines 
 % and produce a transformation  
-function [allsnakes,xx] = ocelot(y,x,start,data,dfig,plim,samp)
+function [allsnakes,xx] = ocelot(y,x,data,dfig,samp)
 % [spln,allsnakes,xx] = ocelot(y,x,start,data,dfig,plim,samp)
 % Reads a given spline model (calculated from optimisation process)
 % and produces the data of the model. Use output from OptimiseBigBoss
@@ -22,7 +22,7 @@ function [allsnakes,xx] = ocelot(y,x,start,data,dfig,plim,samp)
 %%
 % Initialise Data 
 
-dim = length(start);
+dim = size(y,1);
 yc = zeros(size(y));
 %cc = zeros([3,dim]);
 % spln= zeros([258,506]);
@@ -34,7 +34,8 @@ allsnakes = zeros(length(xx),dim);
 % Create Snakes 
 for i = 1:dim
     % Sigmoid used to confine snake motion by +/- plim number of pixels 
-    yc(i,:) = ((sigmf(y(i,:),[2 0]) -0.5)*2)*plim;
+    %yc(i,:) = ((sigmf(y(i,:),[2 0]) -0.5)*2)*plim;
+    yc = y;
     % Spline coef defined for initial control points 
     pp = spline(x,[0 yc(i,:) 0]);
     % Complete snake defined 
@@ -42,7 +43,7 @@ for i = 1:dim
 end
 % Show figure of snakes in snake space 
 if dfig == 1 
-    figure; 
+    figure('units','normalized','outerposition',[0 0 1 1]); 
     imagesc(data);
     colormap('gray')
     colorbar;
@@ -56,7 +57,7 @@ if dfig == 1
                 for j = 1:length(x)
                     labels{j} = int2str(j);
                 end
-                plot(x,yc(i,:) + start(i),'co', xx,yy(:,i) + start(i),'r-','LineWidth',0.8);
+                plot(x,yc(i,:),'co', xx,yy(:,i),'r-','LineWidth',0.8);
                 %text(x,yc(i,:) + start(i),labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
                 %text(x(1),yc(i,1) + start(i),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
                 hold on;
@@ -67,7 +68,7 @@ if dfig == 1
                     labels{j} = int2str(j);
                    
                 end
-                plot(yc(i,:) + start(i),x,'yo', yy(:,i) + start(i), xx,'r-','LineWidth',0.8);
+                plot(yc(i,:),x,'yo', yy(:,i), xx,'r-','LineWidth',0.8);
                 %text(yc(i,:) + start(i),x,labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
                 %text(yc(i,1) + start(i),x(1),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
                 hold on;
@@ -86,12 +87,12 @@ for j = 1:dim
 %                 spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
      %           spln(sub2ind(size(spln),yy(:,j)+start(j),xx(:))) = ones(size(xx));
                 % collect all snake positions
-                allsnakes(i,j) = yy(i,j) + start(j);
+                allsnakes(i,j) = yy(i,j);
             case 41
 %                 spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
         %        spln(sub2ind(size(spln),xx(:),(yy(:,j)+start(j))')) = ones(size(xx));
                 % collect all snake positions
-                allsnakes(i,j) = yy(i,j) + start(j);
+                allsnakes(i,j) = yy(i,j);
         end
     end
 end

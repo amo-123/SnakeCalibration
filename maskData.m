@@ -15,11 +15,6 @@ data(1,:) = [];
 data(end,:) = [];
 data = [zeros(256,3),data,zeros(256,3)];
 
-data_max = max(data(:));
-mask = data > (data_max*mask_threshold);
-
-data = data.*mask;
-
 if flag
     Udata(:,1:18) = 0;
     Udata(1,:) = [];
@@ -31,6 +26,11 @@ if flag
     nUni(nUni <0.01) = 1;
     data = data./nUni;
 end
+
+data_max = max(data(:));
+mask = data > (data_max*mask_threshold);
+
+data = data.*mask;
 
 end
 
