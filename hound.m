@@ -43,9 +43,15 @@ function [ny,flag] = hound(srch,yorigin,y,x,DATA,dfig,samp,stepsize,i,j)
             ny = ymin;
             flag = 1;
     end
-diff = abs(ny(i,j)-yorigin(i,j));
-if diff >=2
-    flag = 0;
-end
+    
+    if j == 1
+        diff = abs(ny(i,j)-ny(i,j+1));
+    else 
+    diff = abs(ny(i,j)-ny(i,j-1));
+    end
+    
+    if diff >=2
+        flag = 0;
+    end
 
 end

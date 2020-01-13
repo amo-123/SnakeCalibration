@@ -1,4 +1,4 @@
-function [tform, moving, fixed] = revolver(Xspline,Xx,Xstart,Xdata,Xplim,Yspline,Yx,Ystart,Ydata,Yplim,samp)
+function [tform, moving, fixed] = revolver(Xspline,Xx,Xdata,Yspline,Yx,Ydata,samp)
 % [moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline,Yx,Ystart,Ydata,plim,samp)
 % Calls Ocelot and MGS to determine the control points for linearity
 % correction
@@ -30,8 +30,8 @@ Ydata(end,:) = [];
 Ydata = [zeros(256,3),Ydata,zeros(256,3)];
 
 
-[Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xstart,Xdata,0,Xplim,samp);
-[Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ystart,Ydata,0,Yplim,samp);
+[Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xdata,0,samp);
+[Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ydata,0,samp);
 
 midX = 512/2;
 

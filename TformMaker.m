@@ -19,7 +19,7 @@ filepath = [files(i).folder,'\'];
 data = open([filepath,filename]);
 
 
-[tform, moving, fixed] = revolver(data.Xspline,data.Xx,data.Xstart,data.Xdata,data.Xplim,data.Yspline,data.Yx,data.Ystart,data.Ydata,data.Yplim,samp);
+[tform, moving, fixed] = revolver(data.Xspline,data.Xx,data.Xdata,data.Yspline,data.Yx,data.Ydata,samp);
 
 if i < 10
     fn = ['.\Transforms\Tform_H0', int2str(i),'_0p1samp_Milan_BF.mat'];

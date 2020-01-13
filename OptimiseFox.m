@@ -1,28 +1,51 @@
 % Fox: self optimisation 
 
 
-addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Lnd_UXY\XLin')
-addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Lnd_UXY\YLin')
-addpath('E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\Lnd_UXY\Uniformity')
+Xpath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\Norm\';
+Ypath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20191127\Y\';
+Upath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20191203\U\';
 
-load('Ldn_20190909_Tc99m_Flood_1p8Mbq_1325time_10min');
-Udata = NodeData(:,:,15);
-fn = 'Nd01SplineData_Lnd_20190909';
-load('Rec_bulmaraw_H04_X_20190909');
-Xdata = output.Statistical_Counts;
-load('Rec_bulmaraw_H04_Y_20190909');
-Ydata = output.Statistical_Counts;
+addpath(Xpath);
+addpath(Ypath);
+addpath(Upath);
+
+
+fn = 'Nd01SplineData_Lnd_Tst';
+
+Xfiles = dir(fullfile(Xpath,'*.mat'));
+Xfile = Xfiles(1).name;
+load(Xfile);
+%Xdata = output.Statistical_Counts;
+Xdata = NodeData;
+%load('Rec_bulmaraw_H09_Y_20191127');
+%Ydata = output.Statistical_Counts;
+Yfiles = dir(fullfile(Ypath,'*.mat'));
+Yfile = Yfiles(1).name;
+load(Yfile);
+Ydata = NodeData;
 direc = 'x';
 DATA = Xdata;
-%%
+
+% figure('units','normalized','outerposition',[0 0 1 1]);
+% subplot(1,2,1);
+% imagesc(Xdata');
+% subplot(1,2,2);
+% imagesc(Ydata');
+
+
+Ufiles = dir(fullfile(Upath,'*.mat'));
+Ufile = Ufiles(1).name;
+load(Ufile);
+Udata = NodeData(:,:,11);
+
 flt = 0.05; %change at bottom too
-msk = maskData(DATA,flt,direc,Udata,0);
+msk = maskData(DATA,flt,direc,Udata,1);
 
 switch direc
     case 'x'
-        x = 20:20:490;
+        x = 17:5:493;
     case 'y'
-        x = 15:15:240;
+        x = 12:5:247;
 end
 
 [x,y] = peak19(msk,direc,x);
@@ -33,18 +56,18 @@ dim = size(y,1);
 %[allsnakes,xx] = ocelot(y,x,DATA,1,1);
 srch = 2;
 step = 1;
-%%
+
     [~,~] = ocelot(y,x,msk,1,1);
     
-
-for i = 1:size(y,1)
+%%
+for i = 1:size(y,1) %i loop each snake 
     counter = 0;
     stop = 1;
     itt = 1;
     flag = ones(size(x));
     %figure,
 while stop
-    for j = 1:length(x)
+    for j = 1:length(x) % j loop each ctrl point 
         %if flag(j)
         [new_y,flag(j)] = hound(srch,yorigin,y,x,msk,0,1,step,i,j);
         y = new_y;
