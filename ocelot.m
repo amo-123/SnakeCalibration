@@ -53,31 +53,33 @@ if dfig == 1
         switch dim
             case 19
 %                 labels = cell(size(x));
-%                 lab2 = {int2str(i)};
+                 lab2 = {int2str(i)};
 %                 for j = 1:length(x)
 %                     labels{j} = int2str(j);
 %                 end
-                plot(xx,yy(:,i),'r-','LineWidth',0.8);
-                %plot(x,yc(i,:),'co', xx,yy(:,i),'r-','LineWidth',0.8);
-                %text(x,yc(i,:) + start(i),labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
-                %text(x(1),yc(i,1) + start(i),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
+                %plot(xx,yy(:,i),'r-','LineWidth',0.8);
+                plot(x,yc(i,:),'yo', xx,yy(:,i),'r-','LineWidth',0.8);
+                %text(x,yc(i,:),labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
+                text(x(1),yc(i,1),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
                 hold on;
             case 41
 %                 labels = cell(size(x));
-%                 lab2 = {int2str(i)};
+                 lab2 = {int2str(i)};
 %                 for j = 1:length(x)
 %                     labels{j} = int2str(j);
 %                    
 %                 end
-                %plot(yc(i,:),x,'yo', yy(:,i), xx,'r-','LineWidth',0.8);
-                plot(yy(:,i), xx,'r-','LineWidth',0.8);
-                %text(yc(i,:) + start(i),x,labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
-                %text(yc(i,1) + start(i),x(1),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
+                plot(yc(i,:),x,'yo', yy(:,i), xx,'r-','LineWidth',0.8);
+                %plot(yy(:,i), xx,'r-','LineWidth',0.8);
+                %text(yc(i,:) ,x,labels,'VerticalAlignment','top','HorizontalAlignment','left','Color','g');
+                text(yc(i,1) ,x(1),lab2,'VerticalAlignment','bottom','HorizontalAlignment','right','Color','g');
                 hold on;
         end
     end
-    hold off;
+   hold off;
+   drawnow;
 end
+
 %% 
 % Define Snake in Matrix space
 for j = 1:dim

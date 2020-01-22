@@ -1,9 +1,9 @@
 % Fox: self optimisation 
 
 
-Xpath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\Norm\';
-Ypath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20191127\Y\';
-Upath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20191203\U\';
+Xpath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20190909\X\';
+Ypath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20190909\Y\';
+Upath = 'E:\TestLRF\PERA_PlanarReconstructionAlgorithm\PeraScripts\Database_Reconstructions\RsynchFiles\20190909\U\';
 
 addpath(Xpath);
 addpath(Ypath);
@@ -13,14 +13,14 @@ addpath(Upath);
 fn = 'Nd01SplineData_Lnd_Tst';
 
 Xfiles = dir(fullfile(Xpath,'*.mat'));
-Xfile = Xfiles(1).name;
+Xfile = Xfiles(2).name;
 load(Xfile);
 %Xdata = output.Statistical_Counts;
 Xdata = NodeData;
 %load('Rec_bulmaraw_H09_Y_20191127');
 %Ydata = output.Statistical_Counts;
 Yfiles = dir(fullfile(Ypath,'*.mat'));
-Yfile = Yfiles(1).name;
+Yfile = Yfiles(2).name;
 load(Yfile);
 Ydata = NodeData;
 direc = 'x';
@@ -36,9 +36,9 @@ DATA = Xdata;
 Ufiles = dir(fullfile(Upath,'*.mat'));
 Ufile = Ufiles(1).name;
 load(Ufile);
-Udata = NodeData(:,:,11);
+Udata = NodeData(:,:,17);
 
-flt = 0.05; %change at bottom too
+flt = 0.1; %change at bottom too
 msk = maskData(DATA,flt,direc,Udata,1);
 
 switch direc

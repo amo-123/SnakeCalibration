@@ -8,16 +8,16 @@ switch dim
         for i = xx
             count = 0;
             
-            while count < 10
+            while count < 20
                 try
-                    [~,x(:,j),w(:,j),~] = findpeaks(imgaussfilt(sum(data(:,i-5:i+5),2),3 + rndpm ));
+                    [~,x(:,j),~,~] = findpeaks(imgaussfilt(sum(data(:,i-5:i+5),2),3 + rndpm ));
 %                     for k = 2:size(data,1)-1
 %                         if  imgaussfilt(sum(data(k-1,i-5:i+5),2),3 + rndpm ) < imgaussfilt(sum(data(k,i-5:i+5),2),3 + rndpm ) ...
 %                                 && imgaussfilt(sum(data(k,i-5:i+5),2),3 + rndpm ) > imgaussfilt(sum(data(k+1,i-5:i+5),2),3 + rndpm )
 %                             x(k,j) = data(k,i);
 %                         end
 %                     end
-                    count = 10;
+                    count = 20;
                 catch
                     count = count+1;
                     rndpm = (rand()*1.5 - 1);
@@ -29,12 +29,14 @@ switch dim
 
         y = x(:,any(x,1));
         x = xx(any(x,1));
-        
-        for j = 1:19
-            outy = isoutlier(y(j,:));
-            M = movmean(y(j,:),8);
-            y(j,outy) = M(outy);
-
+        for k = 1:2
+            for j = 1:19
+                outy = isoutlier(y(j,:));
+                M = round(mean(y(j,~outy)));
+                
+                y(j,outy) = M;
+                
+            end
         end
 
         %y = mean(y,2);
@@ -47,7 +49,7 @@ switch dim
         for i = xx
             count = 0;
             
-            while count < 10
+            while count < 20
                 try
 %                 for k = 2:size(data,2)-1
 %                     if  imgaussfilt(sum(data(i-5:i+5,k-1)),3 + rndpm ) < imgaussfilt(sum(data(i-5:i+5,k)),3 + rndpm ) && imgaussfilt(sum(data(i-5:i+5,k)),3 + rndpm ) > imgaussfilt(sum(data(i-5:i+5,k+1)),3 + rndpm )
@@ -55,8 +57,8 @@ switch dim
 %                         max(k) = data(i,k);
 %                     end
 %                 end
-                    [~,x(:,j),w(:,j),~] = findpeaks(imgaussfilt(sum(data(i-5:i+5,:)),3 +rndpm ));
-                    count = 10;
+                    [~,x(:,j),~,~] = findpeaks(imgaussfilt(sum(data(i-5:i+5,:)),3 +rndpm ));
+                    count = 20;
                 catch
                     count = count+1;
                     rndpm = (rand()*1.5 - 1);
@@ -71,6 +73,15 @@ switch dim
         %y = mean(y,2);
         %sigma = w(:,any(w,1));
         %sigma = mean(sigma,2);
+        for k = 1:2
+            for j = 1:41
+                outy = isoutlier(y(j,:));
+                M = round(mean(y(j,~outy)));
+                
+                y(j,outy) = M;
+                
+            end
+        end
 end
 
 end
