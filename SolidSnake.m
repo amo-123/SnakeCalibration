@@ -1,7 +1,7 @@
 % SPLINE Model
 % Function to produce a matrix of splines 
 % Given a number of splines and matix size 
-function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
+function [sumRes] = SolidSnake(y,x,data,sigma,dfig,plim)
 % SolidSnakes
 % [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 % Determines a series of Splines (Snakes) which fit a given data set of
@@ -24,10 +24,10 @@ function [sumRes] = SolidSnake(y,x,start,data,sigma,dfig,plim)
 %%
 % Initialise Data 
 dataArray = reshape(data, 1, []);
-dim = length(start);
+dim = size(y,1);
 yc = zeros(size(y));
 %cc = zeros([3,dim]);
-spln= zeros([256,512]);
+spln= zeros(size(data));
 xx = x(1):x(end);
 yy = zeros(length(xx),dim);
 allsnakes = zeros(length(xx),dim);
@@ -37,6 +37,7 @@ penalty = 0;
 for i = 1:dim
     % Sigmoid used to confine snake motion by +/- plim number of pixels 
     yc(i,:) = ((sigmf(y(i,:),[2 0]) -0.5)*2)*plim;
+    %yc = y;
     % Spline coef defined for initial control points 
     pp = spline(x,[0 yc(i,:) 0]);
     % Complete snake defined 
@@ -58,13 +59,14 @@ for j = 1:dim
         % Tranform snakes into the matrix spln
         switch dim
             case 19
-                spln(round(yy(i,j)+start(j)),round(xx(i))) = 1;
+                spln(round(yy(i,j)),round(xx(i))) = 1;
+
                 % collect all snake positions
-                allsnakes(i,j) = round(yy(i,j) + start(j));
+                allsnakes(i,j) = round(yy(i,j));
             case 41
-                spln(round(xx(i)), round(yy(i,j)+start(j))) = 1;
+                spln(round(xx(i)), round(yy(i,j))) = 1;
                 % collect all snake positions
-                allsnakes(i,j) = round(yy(i,j) + start(j));
+                allsnakes(i,j) = round(yy(i,j));
         end
     end
 end
@@ -72,13 +74,13 @@ end
 % Display snakes in Matrix space overlay the Data 
 if dfig == 2 || dfig == 4
         figure; 
-    imagesc(data), hold on;
+    imagesc(data.*10), hold on;
     for i = 1:dim
         switch dim
             case 19
-                plot(x,yc(i,:) + start(i),'yo', xx,yy(:,i) + start(i),'r-','LineWidth',0.8), hold on;
+                plot(x,yc(i,:),'yo', xx,yy(:,i),'r-','LineWidth',0.8), hold on;
             case 41
-                plot(yc(i,:) + start(i),x,'yo', yy(:,i) + start(i), xx,'r-','LineWidth',0.8), hold on;
+                plot(yc(i,:),x,'yo', yy(:,i), xx,'r-','LineWidth',0.8), hold on;
         end
     end
     hold off;
@@ -86,17 +88,23 @@ end
 %% 
 % Normalise and Convolve Snake Matrix 
 
-NRM = sum(dataArray)/sum(sum(spln));
-
 spln = imgaussfilt(spln,sigma);
-
-spln = NRM.*spln;
-
+% 
+spln = mean(dataArray)*((spln-min(min(spln)))./(max(max(spln))-min(min(spln))));
+%% 
+% data(data < (mean(mean(data)))*0.5) =  0;
+% ndata = data./(mean(mean(data)));
+% ndata(ndata <0.01) = 1;
+% spln = spln./ndata;
 
 
 % Display the normalised data 
 if dfig == 2 || dfig == 4
-    figure, imagesc(spln);
+    figure; 
+%     subplot(1,2,1);
+%     imagesc(spln);
+%     subplot(1,2,2);
+    imagesc(data);
 end
 
 %%
@@ -104,7 +112,7 @@ end
 splnflt = reshape(spln,1,[]);
 
 if dfig == 3 || dfig == 4
-    figure, plot(dataArray,'.r'), hold on, plot(splnflt,'x'), hold off;
+    figure, plot(dataArray,'.r');
 end
 
 %cc = corrcoef(splnflt);
@@ -123,10 +131,21 @@ for i = 1:length(xx)
         break
     end
 end
-%% Simularit measure 
-%Root Mean Square Error  
-sumRes = sqrt(sum((dataArray - splnflt).^2)./numel(dataArray)) + penalty;
+%% Simularity measure 
+% %Root Mean Square Error  
+% srch = 3;
+% Res = zeros([dim,1]);
 
+% for i = 1:dim
+% switch dim
+%     case 19
+%         Res(i) = sum(sum(data([round(allsnakes(:,i))-srch,round(allsnakes(:,i)+srch)], xx)));
+%     case 41
+%         Res(i) = sum(sum(data(xx,[round(allsnakes(:,i))-srch,round(allsnakes(:,i)+srch)])));
+% end
+% end
+sumRes = (sqrt(sum((dataArray - splnflt).^2)./numel(dataArray))/mean(dataArray)) + penalty;
+% sumRes = (1/sum(Res)) + penalty;
 %sumRes = sum(abs(dataArray - splnflt))./numel(dataArray) + sum(cc(1,:));
 
 end
