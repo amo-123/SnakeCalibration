@@ -8,3 +8,7 @@ OptimiseSnks\.asv
 *.mat
 
 *.fig
+
+./Output/Nd01SplineData_Mil_Norm
+
+Output/

@@ -1,4 +1,4 @@
-function [data] = maskData(data,mask_threshold,cut,Udata,flag)
+function [data] = maskData(data,mask_threshold,Udata,flag)
 % filters out data noise given by a threshold 
 % data : count based image data 
 % mask_thershold : fraction of data to be removed i.e remove lowest 20% of
@@ -6,10 +6,11 @@ function [data] = maskData(data,mask_threshold,cut,Udata,flag)
 % cut : used to determine the cut off of the "bright band" seen in 'y' data
 % Udata : input uniformity flood data, used for UC 
 % flag : turn UC on or off 
-if cut == 'y'
-    data(:,1:18) = 0;
-else
-end
+
+data(:,1:18) = 0;
+data(1:10,:) = 0;
+data(:,502:end) = 0;
+data(250:end,:) = 0;
 
 data(1,:) = [];
 data(end,:) = [];
@@ -17,6 +18,9 @@ data = [zeros(256,3),data,zeros(256,3)];
 
 if flag
     Udata(:,1:18) = 0;
+    Udata(1:9,:) = 0;
+    Udata(:,502:end) = 0;
+    Udata(250:end,:) = 0;
     Udata(1,:) = [];
     Udata(end,:) = [];
     Udata = [zeros(256,3),Udata,zeros(256,3)];
