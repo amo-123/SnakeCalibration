@@ -1,4 +1,4 @@
-function [tform, moving, fixed] = revolver(Xspline,Xx,Xdata,Yspline,Yx,Ydata,samp)
+function [tform, moving, fixed] = revolver(Xspline,Xx,Xdata,Yspline,Yx,Ydata,samp,line)
 % [moving,fixed] = revolver(Xspline,Xx,Xstart,Xdata,Yspline,Yx,Ystart,Ydata,plim,samp)
 % Calls Ocelot and MGS to determine the control points for linearity
 % correction
@@ -28,7 +28,8 @@ Xdata = [zeros(256,3),Xdata,zeros(256,3)];
 Ydata(1,:) = [];
 Ydata(end,:) = [];
 Ydata = [zeros(256,3),Ydata,zeros(256,3)];
-
+lineX = line(1);
+lineY = line(2);
 
 [Xcoordy,Xcoordx] = ocelot(Xspline,Xx,Xdata,0,samp);
 [Ycoordy,Ycoordx] = ocelot(Yspline,Yx,Ydata,0,samp);
@@ -42,31 +43,31 @@ Xlinspace = 2.2222/0.2;
 Xgeo = (-20:20)*Xlinspace + midX;
 
 Ygeo = (-9:9)*Xlinspace + midY;
-
+% 
 % figure(1);
-% for i = 1:19                                                                                                                                                                                                    
+% for i = 1:lineX                                                                                                                                                                                                    
 %     plot(Xcoordx,Xcoordy(:,i),'r-'), hold on;
 % end
 % hold on;
-% for i = 1:41
+% for i = 1:lineY
 %     plot(Ycoordy(:,i), Ycoordx,'b-'), hold on;
 %     
 % end
 % hold off;
 %% 
-xy = zeros([2,19,41]);
-Refxy = zeros([2,19,41]);
+xy = zeros([2,lineX,lineY]);
+Refxy = zeros([2,lineX,lineY]);
 
 
-for i = 1:41
-    for j = 1:19
+for i = 1:lineY
+    for j = 1:lineX
         xy(:,j,i) = MGS(Xcoordy(:,j),Xcoordx,Ycoordy(:,i),Ycoordx);
         Refxy(:,j,i) = [Xgeo(i),Ygeo(j)];
-        %vec = Refxy(:,j,i) - xy(:,j,i); 
-        %figure(1)
-        %hold on, plot(xy(1,j,i),xy(2,j,i),'xk'), hold off
-        %hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'om'), hold off
-        %hold on, quiver(xy(1,j,i),xy(2,j,i),vec(1),vec(2),'Color','c'),hold off
+        vec = Refxy(:,j,i) - xy(:,j,i); 
+%         figure(1)
+%         hold on, plot(xy(1,j,i),xy(2,j,i),'xk'), hold off
+%         hold on, plot(Refxy(1,j,i),Refxy(2,j,i),'om'), hold off
+%         hold on, quiver(xy(1,j,i),xy(2,j,i),vec(1),vec(2),'Color','c'),hold off
     end
     
 end

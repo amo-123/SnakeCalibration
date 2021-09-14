@@ -1,64 +1,47 @@
 % Fox: self optimisation 
 
-clear all; 
-close all;
+
 %Xpath = '/media/ashley/My Passport/Registration/SolidSnakes/Data/NormRecon/20190307/XSnk/';
-%Xpath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/DOI/AllEvents/UniEW/Xlinearity/';
-%Xpath = '/media/ashley/My Passport/DOI_Image_Proj/Milan/Calib/XCal/Det13/';
-%Ypath = '/media/ashley/My Passport/DOI_Image_Proj/Milan/Calib/YCal/Det13/';
-Xpath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/XLin/Det20/';
-Ypath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/YLin/Det20/';
+Xpath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/DOI/AllEvents/UniEW/Xlinearity/';
 %Ypath = '/media/ashley/My Passport/Registration/SolidSnakes/Data/NormRecon/20190307/YSnk/';
-%YPath = '
-%Upath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/Normalised/';
-Upath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/Uni/';
+Ypath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/DOI/AllEvents/UniEW/Ylinearity/';
+Upath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/Normalised/';
+
 %addpath(Xpath);
 %addpath(Ypath);
 %addpath(Upath);
 
-
-fn = 'Nd20SplineData_L2021';
-NodeNum = 20;
+fn = 'Nd10SplineData_Mil_DOI';
+NodeNum = 10;
 
 Xfiles = dir(fullfile(Xpath,'*.mat'));
-Xfile = Xfiles.name;
-data  = load([Xpath Xfile]);
+Xfile = Xfiles(NodeNum).name;
+load([Xpath Xfile]);
 %Xdata = output.Statistical_Counts;
-%%%% DOI Load
-%NodeData = zeros(258,506);
-%for i = 3:4
-%     NodeData = NodeData + data.NodeData{NodeNum,i};
-%end
-
-%NodeData = NodeData(~cellfun('isempty',NodeData));
-Xdata = data.NodeData{NodeNum};
-%load('Rec_bulmaraw_H09_Y_20191127');
-%Ydata = output.Statistical_Counts;
-%Yfiles = dir(fullfile(Ypath,'*.mat'));
-%Yfile = Yfiles.name;
-%load([Ypath Yfile]);
-
-Yfiles = dir(fullfile(Ypath,'*.mat'));
-Yfile = Yfiles.name;
-data  = load([Ypath Yfile]);
-%Xdata = output.Statistical_Counts;
-
-%%%%% DOI load
-%NodeData = zeros(258,506);
-%for i = 3:4
-%     NodeData = NodeData + data.NodeData{NodeNum,i};
+% NodeData = zeros(256,508);
+% for i = 1:4
+%     NodeData = NodeData + data.NodeData{i};
 % end
 
-%NodeData = NodeData(~cellfun('isempty',NodeData));
-Ydata = data.NodeData{NodeNum};
+%Xdata = NodeData{1};
+imgX = reshape(cell2mat(NodeData),[258,506,4]);
+
+
+Xdata = imgX(:,:,3) + imgX(:,:,4);
+
+%load('Rec_bulmaraw_H09_Y_20191127');
+%Ydata = output.Statistical_Counts;
+Yfiles = dir(fullfile(Ypath,'*.mat'));
+Yfile = Yfiles(NodeNum).name;
+load([Ypath Yfile]);
 
 % NodeData = zeros(256,508);
 % for i = 1:4
 %     NodeData = NodeData + data.NodeData{i};
 % end
-%NodeData = NodeData(~cellfun('isempty',NodeData));
+imgY = reshape(cell2mat(NodeData),[258,506,4]);
+Ydata = imgY(:,:,3) + imgY(:,:,4);
 %Ydata = NodeData{1};
-% Ydata = NodeData{1};
 
 for i =1:2
     if i == 1
@@ -77,11 +60,11 @@ for i =1:2
     
     
     Ufiles = dir(fullfile(Upath,'*.mat'));
-    Ufile = Ufiles(2).name;
-    data = load([Upath Ufile]);
-    Udata = data.NodeData{NodeNum};
+    Ufile = Ufiles(NodeNum).name;
+    load([Upath Ufile]);
+    Udata = output.Statistical_Counts;
     
-    flt = 0.1; %change at bottom too
+    flt = 0.051; %change at bottom too
     msk = maskData(DATA,flt,Udata,0);
     
     switch direc
@@ -90,8 +73,8 @@ for i =1:2
         case 'y'
             x = 12:5:247;
     end
-    line = [19,40];
-    [x,y] = peak19(msk,direc,x,line);
+    
+    [x,y] = peak19(msk,direc,x);
     
     yorigin = y;
     dim = size(y,1);
@@ -99,9 +82,9 @@ for i =1:2
     %[allsnakes,xx] = ocelot(y,x,DATA,1,1);
     srch = 2;
     step = 1;
-    x = x(1:2:end); %smooth
-    y = y(:,1:2:end);
-    [~,~] = ocelot(y,x,msk,1,1,line);
+    
+    [~,~] = ocelot(y,x,msk,1,1);
+
     if i == 1
         Xspline = y;
         Xx = x;
@@ -112,7 +95,7 @@ for i =1:2
     
 end
 
-save(['./Output/',fn],'Xspline','Xx','Xdata','Yspline','Yx','Ydata','line');
+save(['./Output/',fn],'Xspline','Xx','Xdata','Yspline','Yx','Ydata');
 
 
 %%

@@ -6,8 +6,8 @@ close all;
 %Xpath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/DOI/AllEvents/UniEW/Xlinearity/';
 %Xpath = '/media/ashley/My Passport/DOI_Image_Proj/Milan/Calib/XCal/Det13/';
 %Ypath = '/media/ashley/My Passport/DOI_Image_Proj/Milan/Calib/YCal/Det13/';
-Xpath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/XLin/Det20/';
-Ypath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/YLin/Det20/';
+Xpath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/XLin/Det17/';
+Ypath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/YLin/Det17/';
 %Ypath = '/media/ashley/My Passport/Registration/SolidSnakes/Data/NormRecon/20190307/YSnk/';
 %YPath = '
 %Upath = '/media/ashley/My Passport/TestLRF/PERA_PlanarReconstructionAlgorithm/PeraScripts/projects/INSERT_recon/Event_recon2/Database_Reconstructions/Normalised/';
@@ -17,8 +17,8 @@ Upath = '/media/ashley/My Passport/London2021/PlanarProj/20210818/Uni/';
 %addpath(Upath);
 
 
-fn = 'Nd20SplineData_L2021';
-NodeNum = 20;
+fn = 'Nd17SplineData_L2021';
+NodeNum = 17;
 
 Xfiles = dir(fullfile(Xpath,'*.mat'));
 Xfile = Xfiles.name;

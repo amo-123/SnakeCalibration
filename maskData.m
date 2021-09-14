@@ -8,9 +8,9 @@ function [data] = maskData(data,mask_threshold,Udata,flag)
 % flag : turn UC on or off 
 
 data(:,1:18) = 0;
-data(1:10,:) = 0;
+%data(1:10,:) = 0;
 data(:,502:end) = 0;
-data(250:end,:) = 0;
+%data(250:end,:) = 0;
 
 data(1,:) = [];
 data(end,:) = [];

@@ -1,8 +1,10 @@
-function [x,y] = peak19(data,dim,xx)
+function [x,y] = peak19(data,dim,xx, line)
 rndpm = 0;
+lineX = line(1);
+lineY = line(2);
 switch dim
     case 'x'
-        x = zeros(19, length(xx));
+        x = zeros(lineX, length(xx));
         %w = zeros(19, length(xx));
         j = 1;
         for i = xx
@@ -30,7 +32,7 @@ switch dim
         y = x(:,any(x,1));
         x = xx(any(x,1));
         for k = 1:2
-            for j = 1:19
+            for j = 1:lineX
                 outy = isoutlier(y(j,:));
                 M = round(mean(y(j,~outy)));
                 
@@ -43,7 +45,7 @@ switch dim
         %sigma = w(:,any(w,1));
         %sigma = mean(sigma,2);
     case 'y'
-        x = zeros(41, length(xx));
+        x = zeros(lineY, length(xx));
         %w = zeros(41, length(xx));
         j = 1;
         for i = xx
@@ -74,7 +76,7 @@ switch dim
         %sigma = w(:,any(w,1));
         %sigma = mean(sigma,2);
         for k = 1:2
-            for j = 1:41
+            for j = 1:lineY
                 outy = isoutlier(y(j,:));
                 M = round(mean(y(j,~outy)));
                 
